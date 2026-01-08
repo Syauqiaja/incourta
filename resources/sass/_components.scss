@@ -1,0 +1,582 @@
+// ========================================
+// General Component Styles
+// ========================================
+
+// ========================================
+// Typography
+// ========================================
+
+h1, h2, h3, h4, h5, h6 {
+    color: $text-primary;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: $spacing-md;
+}
+
+h1 { font-size: 28px; letter-spacing: -0.5px; }
+h2 { font-size: 24px; letter-spacing: -0.3px; }
+h3 { font-size: 20px; }
+h4 { font-size: 18px; }
+h5 { font-size: 16px; }
+h6 { font-size: 14px; }
+
+p {
+    color: $text-secondary;
+    margin-bottom: $spacing-md;
+    line-height: $line-height-base;
+}
+
+// ========================================
+// Links
+// ========================================
+
+a {
+    color: $link-color;
+    text-decoration: none;
+    transition: color $transition-base;
+    font-weight: 500;
+
+    &:hover {
+        color: $link-hover;
+        text-decoration: none;
+    }
+
+    &:focus {
+        outline: 2px solid $primary-500;
+        outline-offset: 2px;
+    }
+
+    &.link-muted {
+        color: $text-secondary;
+        font-weight: 400;
+
+        &:hover {
+            color: $text-primary;
+        }
+    }
+
+    &.link-underline {
+        text-decoration: underline;
+    }
+}
+
+// ========================================
+// Buttons
+// ========================================
+
+.btn {
+    padding: $spacing-md $spacing-xl;
+    border-radius: $border-radius;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all $transition-slow;
+    border: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: $spacing-sm;
+    text-decoration: none;
+    line-height: 1;
+
+    &:focus {
+        outline: 2px solid $primary-500;
+        outline-offset: 2px;
+    }
+
+    &:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        pointer-events: none;
+    }
+}
+
+.btn-primary {
+    background: $btn-primary-bg;
+    color: $btn-primary-color;
+    box-shadow: 0 4px 12px $btn-primary-shadow;
+
+    &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px $btn-primary-shadow-hover;
+        color: $btn-primary-color;
+    }
+
+    &:active {
+        transform: translateY(0);
+    }
+}
+
+.btn-secondary {
+    background: $bg-primary;
+    color: $text-primary;
+    border: 2px solid $border-medium;
+
+    &:hover {
+        background: $bg-tertiary;
+        border-color: $border-dark;
+    }
+}
+
+.btn-outline {
+    background: transparent;
+    color: $primary-500;
+    border: 2px solid $primary-500;
+
+    &:hover {
+        background: $primary-500;
+        color: $text-white;
+    }
+}
+
+.btn-ghost {
+    background: transparent;
+    color: $text-primary;
+    box-shadow: none;
+
+    &:hover {
+        background: $bg-tertiary;
+    }
+}
+
+.btn-success {
+    background: $success-500;
+    color: $text-white;
+
+    &:hover {
+        background: $success-600;
+    }
+}
+
+.btn-danger {
+    background: $error-500;
+    color: $text-white;
+
+    &:hover {
+        background: $error-600;
+    }
+}
+
+.btn-warning {
+    background: $warning-500;
+    color: $text-white;
+
+    &:hover {
+        background: $warning-600;
+    }
+}
+
+.btn-sm {
+    padding: $spacing-sm $spacing-lg;
+    font-size: 14px;
+}
+
+.btn-lg {
+    padding: $spacing-lg $spacing-2xl;
+    font-size: 18px;
+}
+
+.btn-block {
+    width: 100%;
+}
+
+// ========================================
+// Form Elements
+// ========================================
+
+.form-group {
+    margin-bottom: $spacing-xl;
+}
+
+.form-label {
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+    color: $text-primary;
+    margin-bottom: $spacing-sm;
+}
+
+.form-input,
+.form-select,
+.form-textarea {
+    width: 100%;
+    padding: $spacing-md $spacing-lg;
+    font-size: 15px;
+    border: 2px solid $input-border;
+    border-radius: $border-radius;
+    transition: all $transition-slow;
+    background: $input-bg;
+    color: $input-text;
+    font-family: $font-family-sans-serif;
+
+    &:focus {
+        outline: none;
+        border-color: $input-border-focus;
+        box-shadow: 0 0 0 3px rgba(234, 179, 8, 0.1);
+    }
+
+    &::placeholder {
+        color: $input-placeholder;
+    }
+
+    &.is-invalid {
+        border-color: $border-error;
+    }
+
+    &:disabled {
+        background: $bg-tertiary;
+        cursor: not-allowed;
+        opacity: 0.6;
+    }
+}
+
+.form-textarea {
+    resize: vertical;
+    min-height: 120px;
+}
+
+.form-select {
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3E%3C/svg%3E");
+    background-position: right $spacing-md center;
+    background-repeat: no-repeat;
+    background-size: 1.5em 1.5em;
+    padding-right: $spacing-3xl;
+}
+
+.form-input-sm {
+    padding: $spacing-sm $spacing-md;
+    font-size: 14px;
+}
+
+.form-input-lg {
+    padding: $spacing-lg $spacing-xl;
+    font-size: 17px;
+}
+
+// Checkbox & Radio
+.checkbox-input,
+.radio-input {
+    width: 18px;
+    height: 18px;
+    border-radius: $border-radius-sm;
+    cursor: pointer;
+    accent-color: $primary-500;
+}
+
+.radio-input {
+    border-radius: 50%;
+}
+
+.checkbox-label,
+.radio-label {
+    margin-left: $spacing-sm;
+    font-size: 14px;
+    color: $text-secondary;
+    cursor: pointer;
+    user-select: none;
+}
+
+// Password Toggle
+.input-password-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+
+    .form-input {
+        padding-right: $spacing-3xl;
+    }
+
+    .password-toggle {
+        position: absolute;
+        right: $spacing-md;
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: $spacing-sm;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: $text-muted;
+        transition: color $transition-base;
+        border-radius: $border-radius-sm;
+
+        &:hover {
+            color: $text-secondary;
+            background: rgba(0, 0, 0, 0.02);
+        }
+
+        &:focus {
+            outline: 2px solid $primary-500;
+            outline-offset: 2px;
+        }
+
+        .eye-icon {
+            width: 20px;
+            height: 20px;
+        }
+    }
+}
+
+// Error Messages
+.error-message,
+.invalid-feedback {
+    display: block;
+    color: $error-600;
+    font-size: 13px;
+    margin-top: 6px;
+    font-weight: 500;
+}
+
+.help-text {
+    display: block;
+    color: $text-muted;
+    font-size: 13px;
+    margin-top: 6px;
+}
+
+// ========================================
+// Cards
+// ========================================
+
+.card {
+    background: $card-bg;
+    border-radius: $border-radius-lg;
+    box-shadow: $card-shadow-md;
+    padding: $spacing-2xl;
+    margin-bottom: $spacing-xl;
+
+    &.card-sm {
+        padding: $spacing-lg;
+        border-radius: $border-radius;
+    }
+
+    &.card-lg {
+        padding: $spacing-3xl;
+        border-radius: $border-radius-xl;
+    }
+
+    &.card-elevated {
+        box-shadow: $card-shadow;
+    }
+
+    &.card-flat {
+        box-shadow: none;
+        border: 1px solid $border-light;
+    }
+}
+
+.card-header {
+    padding: $spacing-xl;
+    border-bottom: 1px solid $border-light;
+    margin: (-$spacing-2xl) (-$spacing-2xl) $spacing-xl (-$spacing-2xl);
+
+    h1, h2, h3, h4, h5, h6 {
+        margin-bottom: 0;
+    }
+}
+
+.card-footer {
+    padding: $spacing-xl;
+    border-top: 1px solid $border-light;
+    margin: $spacing-xl (-$spacing-2xl) (-$spacing-2xl) (-$spacing-2xl);
+}
+
+.card-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: $text-primary;
+    margin-bottom: $spacing-sm;
+}
+
+.card-subtitle {
+    font-size: 15px;
+    color: $text-secondary;
+    margin-bottom: 0;
+}
+
+// ========================================
+// Alerts
+// ========================================
+
+.alert {
+    padding: $spacing-lg $spacing-xl;
+    border-radius: $border-radius;
+    margin-bottom: $spacing-xl;
+    border-left: 4px solid;
+
+    &.alert-success {
+        background: $success-100;
+        border-color: $success-500;
+        color: $success-700;
+    }
+
+    &.alert-error,
+    &.alert-danger {
+        background: $error-100;
+        border-color: $error-500;
+        color: $error-700;
+    }
+
+    &.alert-warning {
+        background: $warning-100;
+        border-color: $warning-500;
+        color: $warning-700;
+    }
+
+    &.alert-info {
+        background: $info-100;
+        border-color: $info-500;
+        color: $info-700;
+    }
+}
+
+// ========================================
+// Badges
+// ========================================
+
+.badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1;
+
+    &.badge-primary {
+        background: rgba(234, 179, 8, 0.1);
+        color: $primary-700;
+    }
+
+    &.badge-success {
+        background: $success-100;
+        color: $success-700;
+    }
+
+    &.badge-error,
+    &.badge-danger {
+        background: $error-100;
+        color: $error-700;
+    }
+
+    &.badge-warning {
+        background: $warning-100;
+        color: $warning-700;
+    }
+
+    &.badge-gray {
+        background: $gray-200;
+        color: $gray-700;
+    }
+}
+
+// ========================================
+// Dividers
+// ========================================
+
+.divider {
+    height: 1px;
+    background: $border-light;
+    margin: $spacing-xl 0;
+
+    &.divider-vertical {
+        width: 1px;
+        height: auto;
+        margin: 0 $spacing-xl;
+    }
+}
+
+hr {
+    border: 0;
+    height: 1px;
+    background: $border-light;
+    margin: $spacing-xl 0;
+}
+
+// ========================================
+// Utilities
+// ========================================
+
+.text-primary { color: $text-primary !important; }
+.text-secondary { color: $text-secondary !important; }
+.text-muted { color: $text-muted !important; }
+.text-white { color: $text-white !important; }
+.text-success { color: $success-600 !important; }
+.text-error, .text-danger { color: $error-600 !important; }
+.text-warning { color: $warning-600 !important; }
+
+.bg-primary { background: $bg-primary !important; }
+.bg-secondary { background: $bg-secondary !important; }
+.bg-gradient { background: $bg-gradient !important; }
+
+.shadow-sm { box-shadow: $card-shadow-sm !important; }
+.shadow { box-shadow: $card-shadow-md !important; }
+.shadow-lg { box-shadow: $card-shadow-lg !important; }
+.shadow-xl { box-shadow: $card-shadow !important; }
+
+.rounded-sm { border-radius: $border-radius-sm !important; }
+.rounded { border-radius: $border-radius !important; }
+.rounded-md { border-radius: $border-radius-md !important; }
+.rounded-lg { border-radius: $border-radius-lg !important; }
+.rounded-xl { border-radius: $border-radius-xl !important; }
+
+// ========================================
+// Animations
+// ========================================
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.animate-fadeIn { animation: fadeIn 0.3s ease-out; }
+.animate-slideUp { animation: slideUp 0.5s ease-out; }
+.animate-slideDown { animation: slideDown 0.5s ease-out; }
+.animate-slideInLeft { animation: slideInLeft 0.5s ease-out; }
+.animate-slideInRight { animation: slideInRight 0.5s ease-out; }
