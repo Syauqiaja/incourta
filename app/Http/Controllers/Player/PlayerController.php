@@ -7,5 +7,9 @@ use Illuminate\Http\Request;
 
 class PlayerController extends Controller
 {
-    //
+    public function show(Request $request)
+    {
+        $user = $request->user();
+        return view('player.profile', compact('user'));
+    }
 }
