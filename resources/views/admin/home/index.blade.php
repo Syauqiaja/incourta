@@ -1,7 +1,7 @@
 @extends('admin.layouts.app')
 @section('content')
     <!-- [ breadcrumb ] start -->
-    {{ Breadcrumbs::render('admin.home') }}
+    {{ Breadcrumbs::render('admin.home.index') }}
 
     <!-- [ breadcrumb ] end -->
 

@@ -125,10 +125,13 @@
                                     <i class="ti ti-user"></i>
                                     <span>Social Profile</span>
                                 </a>
-                                <a href="../pages/login-v1.html" class="dropdown-item">
-                                    <i class="ti ti-logout"></i>
-                                    <span>Logout</span>
-                                </a>
+                                <form method="POST" action="{{ route('admin.logout') }}">
+                                    @csrf
+                                    <button class="dropdown-item" type="submit">
+                                        <i class="ti ti-logout"></i>
+                                        <span>Logout</span>
+                                    </button>
+                                </form>
                             </div>
                         </div>
                     </div>

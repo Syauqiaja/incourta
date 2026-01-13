@@ -63,17 +63,17 @@ class AjaxForm {
             })
             .finally(() => {
                 // 🔹 AFTER SUBMIT (always)
-                this.options.afterSubmit?.();
+                this.options.afterSubmit?.(this.form);
             });
     }
 
     success(data) {
-        Swal.fire({
+        if (this.options.showLoader) {
+            Swal.close();
+        }
+        Toast.fire({
             icon: 'success',
-            title: 'Berhasil',
-            text: data.message || 'Data berhasil diproses',
-            timer: this.options.redirectDelay,
-            showConfirmButton: false
+            title: data.message || 'Success'
         });
 
         this.options.onSuccess?.(data);
@@ -86,20 +86,28 @@ class AjaxForm {
     }
 
     error(err) {
-        // if (err.errors) {
-        //     const messages = Object.values(err.errors).flat().join('<br>');
-        //     Swal.fire({
-        //         icon: 'error',
-        //         title: 'Validasi Gagal',
-        //         html: messages
-        //     });
-        // } else {
-        //     Swal.fire({
-        //         icon: 'error',
-        //         title: 'Gagal',
-        //         text: err.message || 'Terjadi kesalahan'
-        //     });
-        // }
+        if (this.options.showLoader) {
+            Swal.close();
+        }
+        let message = 'Something went wrong';
+        /**
+     * 🔹 Laravel Validation Error (422)
+     */
+        if (err.status === 422) {
+            // ambil 1 pesan error saja
+            message = Object.values(err.errors)[0];
+        }
+        /**
+         * 🔹 Other errors
+         */
+        else if (err.message) {
+            message = err.message;
+        }
+        Toast.fire({
+            icon: 'error',
+            title: message
+        });
+
 
         this.options.onError?.(err, this.form);
     }

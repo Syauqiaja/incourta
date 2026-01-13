@@ -60,15 +60,33 @@
     <script src="{{ asset('assets/js/custom/ajax-request.js') }}"></script>
     <script>
         new AjaxForm('#login-form', {
-            showLoader: false,
+            showLoader: true,
+            redirectDelay: 1000,
             beforeSubmit: (form) => {
+                // reset error sebelumnya
+                form.querySelectorAll('.is-invalid').forEach(el => {
+                    el.classList.remove('is-invalid');
+                });
+
+                form.querySelectorAll('.invalid-feedback').forEach(el => {
+                    el.remove();
+                });
                 form.querySelector('button[type=submit]').disabled = true;
             },
-            afterSubmit: () => {
+            afterSubmit: (form) => {
                 document.querySelector('button[type=submit]').disabled = false;
             },
             onError: (err, form) => {
-                console.log(err.errors)
+                if (!err?.errors) return;
+
+                // reset error sebelumnya
+                form.querySelectorAll('.is-invalid').forEach(el => {
+                    el.classList.remove('is-invalid');
+                });
+
+                form.querySelectorAll('.invalid-feedback').forEach(el => {
+                    el.remove();
+                });
                 // Laravel validation error
                 Object.entries(err.errors).forEach(([field, messages]) => {
                     const input = form.querySelector(`[name="${field}"]`);

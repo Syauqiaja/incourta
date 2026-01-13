@@ -11,6 +11,19 @@
     @pushOnce('scripts')
         @if (config('sweetalert.neverLoadJS') === false)
             <script src="{{ $cdn ?? asset('vendor/sweetalert/sweetalert.all.js') }}"></script>
+            <script>
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: "top-end",
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.onmouseenter = Swal.stopTimer;
+                        toast.onmouseleave = Swal.resumeTimer;
+                    }
+                });
+            </script>
         @endif
         @if (Session::has('alert.delete') || Session::has('alert.config'))
             <script>
