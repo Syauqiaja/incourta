@@ -17,9 +17,9 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
             $table->string('phone_number');
             $table->string('city');
+            $table->string('nik');
             $table->enum('category', array_column(MatchCategories::cases(), 'value'))->nullable();
             $table->string('photo')->nullable();
-            $table->string('nik')->nullable();
             $table->string('instagram')->nullable();
             $table->string('reclub')->nullable();
             $table->timestamps();
