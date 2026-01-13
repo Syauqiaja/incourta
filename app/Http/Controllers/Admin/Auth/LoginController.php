@@ -24,12 +24,11 @@ class LoginController extends Controller
             if (!$user) {
                 throw new \Exception('Invalid email or password.', 422);
             }
-            if (!$user->hasRole(['admin', 'superadmin'])) {
-                throw new \Exception("You don't have access this page", 422);
-            }
-
             if (!Auth::attempt($credentials, $request->boolean('remember'))) {
                 throw new \Exception('Invalid email or password.', 422);
+            }
+            if (!$user->hasRole(['admin', 'superadmin'])) {
+                throw new \Exception("You don't have access this page", 422);
             }
             $request->session()->regenerate();
 
