@@ -26,3 +26,15 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::middleware('auth')->get('/profile', [App\Http\Controllers\Player\PlayerController::class, 'show'])->name('player.profile');
+
+Route::middleware('auth')->prefix('events')->name('events.')->group(function () {
+    Route::get('/', [App\Http\Controllers\Events\EventController::class, 'index'])->name('index');
+
+    Route::get('/create', [App\Http\Controllers\Events\EventController::class, 'create'])->name('create');
+    Route::post('/create', [App\Http\Controllers\Events\EventController::class, 'store'])->name('store');
+
+    Route::get('/{event}', [App\Http\Controllers\Events\EventController::class, 'show'])->name('show');
+    Route::get('/{event}/edit', [App\Http\Controllers\Events\EventController::class, 'edit'])->name('edit');
+    Route::put('/{event}', [App\Http\Controllers\Events\EventController::class, 'update'])->name('update');
+    Route::delete('/{event}', [App\Http\Controllers\Events\EventController::class, 'destroy'])->name('destroy');
+});
