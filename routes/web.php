@@ -24,7 +24,6 @@ if (is_dir($modularRouteAdminPath)) {
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::middleware('auth')->get('/profile', [App\Http\Controllers\Player\PlayerController::class, 'show'])->name('player.profile');
 
 Route::middleware('auth')->prefix('events')->name('events.')->group(function () {

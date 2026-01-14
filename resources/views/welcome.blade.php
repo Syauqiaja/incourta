@@ -41,200 +41,82 @@
         <div class="row g-4">
             <!-- Tournament Card 1 -->
             <div class="col-md-6 col-lg-4">
-                <div class="event-card">
-                    <div class="event-badge event-badge-tournament">Tournament</div>
-                    <div class="event-header">
-                        <h3 class="event-title">Summer Championship 2026</h3>
-                        <div class="event-date">
-                            <i class="bi bi-calendar-event"></i>
-                            <span>Feb 15 - Feb 20, 2026</span>
-                        </div>
-                        <div class="event-location">
-                            <i class="bi bi-geo-alt"></i>
-                            <span>Padel Arena Jakarta</span>
-                        </div>
-                    </div>
-                    <div class="event-details">
-                        <div class="event-info">
-                            <span class="info-label">Category</span>
-                            <span class="info-value">Mixed Doubles</span>
-                        </div>
-                        <div class="event-info">
-                            <span class="info-label">Teams</span>
-                            <span class="info-value">16/32</span>
-                        </div>
-                        <div class="event-info">
-                            <span class="info-label">Prize Pool</span>
-                            <span class="info-value">$5,000</span>
-                        </div>
-                    </div>
-                    <a href="#" class="btn btn-primary w-100">Register Now</a>
-                </div>
+                <x-events.event-card
+                    type="Tournament"
+                    title="Summer Championship 2026"
+                    dateRange="Feb 15 - Feb 20, 2026"
+                    location="Padel Arena Jakarta"
+                    category="Mixed Doubles"
+                    teams="16/32"
+                    entryFee="$5,000"
+                />
             </div>
 
             <!-- Tournament Card 2 -->
             <div class="col-md-6 col-lg-4">
-                <div class="event-card">
-                    <div class="event-badge event-badge-league">League</div>
-                    <div class="event-header">
-                        <h3 class="event-title">Spring League 2026</h3>
-                        <div class="event-date">
-                            <i class="bi bi-calendar-event"></i>
-                            <span>Feb 1 - Apr 30, 2026</span>
-                        </div>
-                        <div class="event-location">
-                            <i class="bi bi-geo-alt"></i>
-                            <span>Multiple Venues</span>
-                        </div>
-                    </div>
-                    <div class="event-details">
-                        <div class="event-info">
-                            <span class="info-label">Category</span>
-                            <span class="info-value">Men's Doubles</span>
-                        </div>
-                        <div class="event-info">
-                            <span class="info-label">Teams</span>
-                            <span class="info-value">24/30</span>
-                        </div>
-                        <div class="event-info">
-                            <span class="info-label">Duration</span>
-                            <span class="info-value">12 Weeks</span>
-                        </div>
-                    </div>
-                    <a href="#" class="btn btn-primary w-100">Join League</a>
-                </div>
+                <x-events.event-card
+                    type="League"
+                    title="Spring League 2026"
+                    dateRange="Feb 1 - Apr 30, 2026"
+                    location="Multiple Venues"
+                    category="Men's Doubles"
+                    teams="24/30"
+                    entryFee="12 Weeks"
+                    buttonText="Join League"
+                />
             </div>
 
             <!-- Tournament Card 3 -->
             <div class="col-md-6 col-lg-4">
-                <div class="event-card">
-                    <div class="event-badge event-badge-tournament">Tournament</div>
-                    <div class="event-header">
-                        <h3 class="event-title">Beginner's Cup</h3>
-                        <div class="event-date">
-                            <i class="bi bi-calendar-event"></i>
-                            <span>Feb 8 - Feb 9, 2026</span>
-                        </div>
-                        <div class="event-location">
-                            <i class="bi bi-geo-alt"></i>
-                            <span>Padel Club Bandung</span>
-                        </div>
-                    </div>
-                    <div class="event-details">
-                        <div class="event-info">
-                            <span class="info-label">Category</span>
-                            <span class="info-value">Beginner</span>
-                        </div>
-                        <div class="event-info">
-                            <span class="info-label">Teams</span>
-                            <span class="info-value">8/16</span>
-                        </div>
-                        <div class="event-info">
-                            <span class="info-label">Entry Fee</span>
-                            <span class="info-value">Free</span>
-                        </div>
-                    </div>
-                    <a href="#" class="btn btn-primary w-100">Register Now</a>
-                </div>
+                <x-events.event-card
+                    type="Tournament"
+                    title="Beginner's Cup"
+                    dateRange="Feb 8 - Feb 9, 2026"
+                    location="Padel Club Bandung"
+                    category="Beginner"
+                    teams="8/16"
+                    entryFee="Free"
+                />
             </div>
 
             <!-- Tournament Card 4 -->
             <div class="col-md-6 col-lg-4">
-                <div class="event-card">
-                    <div class="event-badge event-badge-tournament">Tournament</div>
-                    <div class="event-header">
-                        <h3 class="event-title">Women's Open</h3>
-                        <div class="event-date">
-                            <i class="bi bi-calendar-event"></i>
-                            <span>Mar 5 - Mar 7, 2026</span>
-                        </div>
-                        <div class="event-location">
-                            <i class="bi bi-geo-alt"></i>
-                            <span>Padel Center Surabaya</span>
-                        </div>
-                    </div>
-                    <div class="event-details">
-                        <div class="event-info">
-                            <span class="info-label">Category</span>
-                            <span class="info-value">Women's Doubles</span>
-                        </div>
-                        <div class="event-info">
-                            <span class="info-label">Teams</span>
-                            <span class="info-value">12/20</span>
-                        </div>
-                        <div class="event-info">
-                            <span class="info-label">Prize Pool</span>
-                            <span class="info-value">$3,500</span>
-                        </div>
-                    </div>
-                    <a href="#" class="btn btn-primary w-100">Register Now</a>
-                </div>
+                <x-events.event-card
+                    type="Tournament"
+                    title="Women's Open"
+                    dateRange="Mar 5 - Mar 7, 2026"
+                    location="Padel Center Surabaya"
+                    category="Women's Doubles"
+                    teams="12/20"
+                    entryFee="$3,500"
+                />
             </div>
 
             <!-- League Card -->
             <div class="col-md-6 col-lg-4">
-                <div class="event-card">
-                    <div class="event-badge event-badge-league">League</div>
-                    <div class="event-header">
-                        <h3 class="event-title">Elite Division</h3>
-                        <div class="event-date">
-                            <i class="bi bi-calendar-event"></i>
-                            <span>Mar 1 - May 31, 2026</span>
-                        </div>
-                        <div class="event-location">
-                            <i class="bi bi-geo-alt"></i>
-                            <span>Premium Courts Jakarta</span>
-                        </div>
-                    </div>
-                    <div class="event-details">
-                        <div class="event-info">
-                            <span class="info-label">Category</span>
-                            <span class="info-value">Advanced</span>
-                        </div>
-                        <div class="event-info">
-                            <span class="info-label">Teams</span>
-                            <span class="info-value">18/20</span>
-                        </div>
-                        <div class="event-info">
-                            <span class="info-label">Prize Pool</span>
-                            <span class="info-value">$10,000</span>
-                        </div>
-                    </div>
-                    <a href="#" class="btn btn-primary w-100">Join League</a>
-                </div>
+                <x-events.event-card
+                    type="League"
+                    title="Elite Division"
+                    dateRange="Mar 1 - May 31, 2026"
+                    location="Premium Courts Jakarta"
+                    category="Advanced"
+                    teams="18/20"
+                    entryFee="$10,000"
+                    buttonText="Join League"
+                />
             </div>
 
             <!-- Tournament Card 5 -->
             <div class="col-md-6 col-lg-4">
-                <div class="event-card">
-                    <div class="event-badge event-badge-tournament">Tournament</div>
-                    <div class="event-header">
-                        <h3 class="event-title">City Championship</h3>
-                        <div class="event-date">
-                            <i class="bi bi-calendar-event"></i>
-                            <span>Mar 20 - Mar 22, 2026</span>
-                        </div>
-                        <div class="event-location">
-                            <i class="bi bi-geo-alt"></i>
-                            <span>City Sports Complex</span>
-                        </div>
-                    </div>
-                    <div class="event-details">
-                        <div class="event-info">
-                            <span class="info-label">Category</span>
-                            <span class="info-value">All Categories</span>
-                        </div>
-                        <div class="event-info">
-                            <span class="info-label">Teams</span>
-                            <span class="info-value">28/48</span>
-                        </div>
-                        <div class="event-info">
-                            <span class="info-label">Prize Pool</span>
-                            <span class="info-value">$8,000</span>
-                        </div>
-                    </div>
-                    <a href="#" class="btn btn-primary w-100">Register Now</a>
-                </div>
+                <x-events.event-card
+                    type="Tournament"
+                    title="City Championship"
+                    dateRange="Mar 20 - Mar 22, 2026"
+                    location="City Sports Complex"
+                    category="All Categories"
+                    teams="28/48"
+                    entryFee="$8,000"
+                />
             </div>
         </div>
     </div>
@@ -251,210 +133,98 @@
         <div class="row g-4">
             <!-- Player Card 1 -->
             <div class="col-md-6 col-lg-3">
-                <div class="player-card">
-                    <div class="player-rank">#1</div>
-                    <div class="player-avatar">
-                        <img src="https://ui-avatars.com/api/?name=Juan+Martinez&size=120&background=EAB308&color=fff&bold=true" alt="Juan Martinez">
-                    </div>
-                    <h4 class="player-name">Juan Martinez</h4>
-                    <p class="player-category">Men's Doubles</p>
-                    <div class="player-stats">
-                        <div class="stat-item">
-                            <span class="stat-value">156</span>
-                            <span class="stat-label">Matches</span>
-                        </div>
-                        <div class="stat-item">
-                            <span class="stat-value">89%</span>
-                            <span class="stat-label">Win Rate</span>
-                        </div>
-                        <div class="stat-item">
-                            <span class="stat-value">12</span>
-                            <span class="stat-label">Titles</span>
-                        </div>
-                    </div>
-                </div>
+                <x-players.player-card
+                    rank="1"
+                    name="Juan Martinez"
+                    category="Men's Doubles"
+                    matches="156"
+                    winRate="89%"
+                    titles="12"
+                />
             </div>
 
             <!-- Player Card 2 -->
             <div class="col-md-6 col-lg-3">
-                <div class="player-card">
-                    <div class="player-rank">#2</div>
-                    <div class="player-avatar">
-                        <img src="https://ui-avatars.com/api/?name=Sofia+Rodriguez&size=120&background=EAB308&color=fff&bold=true" alt="Sofia Rodriguez">
-                    </div>
-                    <h4 class="player-name">Sofia Rodriguez</h4>
-                    <p class="player-category">Women's Doubles</p>
-                    <div class="player-stats">
-                        <div class="stat-item">
-                            <span class="stat-value">142</span>
-                            <span class="stat-label">Matches</span>
-                        </div>
-                        <div class="stat-item">
-                            <span class="stat-value">86%</span>
-                            <span class="stat-label">Win Rate</span>
-                        </div>
-                        <div class="stat-item">
-                            <span class="stat-value">10</span>
-                            <span class="stat-label">Titles</span>
-                        </div>
-                    </div>
-                </div>
+                <x-players.player-card
+                    rank="2"
+                    name="Sofia Rodriguez"
+                    category="Women's Doubles"
+                    matches="142"
+                    winRate="86%"
+                    titles="10"
+                />
             </div>
 
             <!-- Player Card 3 -->
             <div class="col-md-6 col-lg-3">
-                <div class="player-card">
-                    <div class="player-rank">#3</div>
-                    <div class="player-avatar">
-                        <img src="https://ui-avatars.com/api/?name=Miguel+Santos&size=120&background=EAB308&color=fff&bold=true" alt="Miguel Santos">
-                    </div>
-                    <h4 class="player-name">Miguel Santos</h4>
-                    <p class="player-category">Mixed Doubles</p>
-                    <div class="player-stats">
-                        <div class="stat-item">
-                            <span class="stat-value">138</span>
-                            <span class="stat-label">Matches</span>
-                        </div>
-                        <div class="stat-item">
-                            <span class="stat-value">84%</span>
-                            <span class="stat-label">Win Rate</span>
-                        </div>
-                        <div class="stat-item">
-                            <span class="stat-value">9</span>
-                            <span class="stat-label">Titles</span>
-                        </div>
-                    </div>
-                </div>
+                <x-players.player-card
+                    rank="3"
+                    name="Miguel Santos"
+                    category="Mixed Doubles"
+                    matches="138"
+                    winRate="84%"
+                    titles="9"
+                />
             </div>
 
             <!-- Player Card 4 -->
             <div class="col-md-6 col-lg-3">
-                <div class="player-card">
-                    <div class="player-rank">#4</div>
-                    <div class="player-avatar">
-                        <img src="https://ui-avatars.com/api/?name=Ana+Lopez&size=120&background=EAB308&color=fff&bold=true" alt="Ana Lopez">
-                    </div>
-                    <h4 class="player-name">Ana Lopez</h4>
-                    <p class="player-category">Women's Doubles</p>
-                    <div class="player-stats">
-                        <div class="stat-item">
-                            <span class="stat-value">125</span>
-                            <span class="stat-label">Matches</span>
-                        </div>
-                        <div class="stat-item">
-                            <span class="stat-value">81%</span>
-                            <span class="stat-label">Win Rate</span>
-                        </div>
-                        <div class="stat-item">
-                            <span class="stat-value">8</span>
-                            <span class="stat-label">Titles</span>
-                        </div>
-                    </div>
-                </div>
+                <x-players.player-card
+                    rank="4"
+                    name="Ana Lopez"
+                    category="Women's Doubles"
+                    matches="125"
+                    winRate="81%"
+                    titles="8"
+                />
             </div>
 
             <!-- Player Card 5 -->
             <div class="col-md-6 col-lg-3">
-                <div class="player-card">
-                    <div class="player-rank">#5</div>
-                    <div class="player-avatar">
-                        <img src="https://ui-avatars.com/api/?name=Carlos+Fernandez&size=120&background=EAB308&color=fff&bold=true" alt="Carlos Fernandez">
-                    </div>
-                    <h4 class="player-name">Carlos Fernandez</h4>
-                    <p class="player-category">Men's Doubles</p>
-                    <div class="player-stats">
-                        <div class="stat-item">
-                            <span class="stat-value">118</span>
-                            <span class="stat-label">Matches</span>
-                        </div>
-                        <div class="stat-item">
-                            <span class="stat-value">79%</span>
-                            <span class="stat-label">Win Rate</span>
-                        </div>
-                        <div class="stat-item">
-                            <span class="stat-value">7</span>
-                            <span class="stat-label">Titles</span>
-                        </div>
-                    </div>
-                </div>
+                <x-players.player-card
+                    rank="5"
+                    name="Carlos Fernandez"
+                    category="Men's Doubles"
+                    matches="118"
+                    winRate="79%"
+                    titles="7"
+                />
             </div>
 
             <!-- Player Card 6 -->
             <div class="col-md-6 col-lg-3">
-                <div class="player-card">
-                    <div class="player-rank">#6</div>
-                    <div class="player-avatar">
-                        <img src="https://ui-avatars.com/api/?name=Isabella+Garcia&size=120&background=EAB308&color=fff&bold=true" alt="Isabella Garcia">
-                    </div>
-                    <h4 class="player-name">Isabella Garcia</h4>
-                    <p class="player-category">Mixed Doubles</p>
-                    <div class="player-stats">
-                        <div class="stat-item">
-                            <span class="stat-value">112</span>
-                            <span class="stat-label">Matches</span>
-                        </div>
-                        <div class="stat-item">
-                            <span class="stat-value">78%</span>
-                            <span class="stat-label">Win Rate</span>
-                        </div>
-                        <div class="stat-item">
-                            <span class="stat-value">6</span>
-                            <span class="stat-label">Titles</span>
-                        </div>
-                    </div>
-                </div>
+                <x-players.player-card
+                    rank="6"
+                    name="Isabella Garcia"
+                    category="Mixed Doubles"
+                    matches="112"
+                    winRate="78%"
+                    titles="6"
+                />
             </div>
 
             <!-- Player Card 7 -->
             <div class="col-md-6 col-lg-3">
-                <div class="player-card">
-                    <div class="player-rank">#7</div>
-                    <div class="player-avatar">
-                        <img src="https://ui-avatars.com/api/?name=Diego+Ramirez&size=120&background=EAB308&color=fff&bold=true" alt="Diego Ramirez">
-                    </div>
-                    <h4 class="player-name">Diego Ramirez</h4>
-                    <p class="player-category">Men's Doubles</p>
-                    <div class="player-stats">
-                        <div class="stat-item">
-                            <span class="stat-value">105</span>
-                            <span class="stat-label">Matches</span>
-                        </div>
-                        <div class="stat-item">
-                            <span class="stat-value">76%</span>
-                            <span class="stat-label">Win Rate</span>
-                        </div>
-                        <div class="stat-item">
-                            <span class="stat-value">5</span>
-                            <span class="stat-label">Titles</span>
-                        </div>
-                    </div>
-                </div>
+                <x-players.player-card
+                    rank="7"
+                    name="Diego Ramirez"
+                    category="Men's Doubles"
+                    matches="105"
+                    winRate="76%"
+                    titles="5"
+                />
             </div>
 
             <!-- Player Card 8 -->
             <div class="col-md-6 col-lg-3">
-                <div class="player-card">
-                    <div class="player-rank">#8</div>
-                    <div class="player-avatar">
-                        <img src="https://ui-avatars.com/api/?name=Maria+Silva&size=120&background=EAB308&color=fff&bold=true" alt="Maria Silva">
-                    </div>
-                    <h4 class="player-name">Maria Silva</h4>
-                    <p class="player-category">Women's Doubles</p>
-                    <div class="player-stats">
-                        <div class="stat-item">
-                            <span class="stat-value">98</span>
-                            <span class="stat-label">Matches</span>
-                        </div>
-                        <div class="stat-item">
-                            <span class="stat-value">74%</span>
-                            <span class="stat-label">Win Rate</span>
-                        </div>
-                        <div class="stat-item">
-                            <span class="stat-value">5</span>
-                            <span class="stat-label">Titles</span>
-                        </div>
-                    </div>
-                </div>
+                <x-players.player-card
+                    rank="8"
+                    name="Maria Silva"
+                    category="Women's Doubles"
+                    matches="98"
+                    winRate="74%"
+                    titles="5"
+                />
             </div>
         </div>
     </div>
