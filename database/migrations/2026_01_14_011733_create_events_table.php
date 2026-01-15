@@ -28,7 +28,8 @@ return new class extends Migration
             $table->integer('max_participants');
             $table->integer('max_group')->nullable();
             $table->integer('max_participants_in_group')->nullable();
-
+            $table->integer('points_win')->default(3);
+            $table->integer('points_lose')->default(0);
             $table->timestamps();
         });
     }

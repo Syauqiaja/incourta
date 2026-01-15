@@ -7,7 +7,13 @@
 <script src="{{ asset('assets/js/theme.js') }}"></script>
 <script src="{{ asset('assets/js/plugins/feather.min.js') }}"></script>
 
-
+<script>
+    window.appConfig = {
+        userId: {{ auth()->id() ?? 'null' }},
+        userName: @json(auth()->user()?->name),
+    };
+</script>
+<script src="{{ asset('assets/js/listener.js') }}"></script>
 <script>
     layout_change('light');
 </script>

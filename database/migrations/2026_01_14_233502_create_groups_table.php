@@ -11,12 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('team_events', function (Blueprint $table) {
+        Schema::create('groups', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('first_player_id')->constrained('players')->cascadeOnDelete();
-            $table->foreignId('second_player_id')->nullable()->constrained('players')->cascadeOnDelete();
             $table->foreignId('event_id')->constrained('events')->cascadeOnDelete();
-            $table->integer('seed')->nullable();
+            $table->string('name')->nullable()->index();
             $table->timestamps();
         });
     }
@@ -26,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('team_events');
+        Schema::dropIfExists('event_groups');
     }
 };
