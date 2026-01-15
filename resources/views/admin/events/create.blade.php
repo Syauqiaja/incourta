@@ -1,3 +1,25 @@
+@php
+    use App\MatchCategories;
+    use App\Enums\EventStatus;
+    use App\EventType;
+
+    $eventStatuses = [];
+    $matchCategories = [];
+    $eventTypes = [];
+
+    foreach (MatchCategories::cases() as $category) {
+        $matchCategories[$category->value] = ucwords(str_replace('_', ' ', $category->value));
+    }
+
+    foreach (EventStatus::cases() as $status) {
+        $eventStatuses[$status->value] = ucwords(str_replace('_', ' ', $status->value));
+    }
+
+    foreach (EventType::cases() as $type) {
+        $eventTypes[$type->value] = ucwords(str_replace('_', ' ', $type->value));
+    }
+@endphp
+
 @extends('admin.layouts.app')
 @section('content')
     <!-- [ breadcrumb ] start -->
@@ -26,15 +48,12 @@
                                 />
                             </div>
                             
-                            <div class="col-md-4">
+                          <div class="col-md-4">
                                 <x-admin.select-field
-                                    name="type"
-                                    label="Event Type"
-                                    :options="[
-                                        'tournament' => 'Tournament',
-                                        'league' => 'League'
-                                    ]"
-                                    placeholder="Select event type"
+                                    name="category"
+                                    label="Category"
+                                    :options="$matchCategories"
+                                    placeholder="Select category"
                                     :required="true"
                                 />
                             </div>
@@ -65,30 +84,35 @@
                                 <x-admin.text-field
                                     name="location"
                                     label="Location"
+                                    type="textarea"
                                     placeholder="Enter event location"
                                     :required="true"
                                 />
                             </div>
-                            
-                            <div class="col-md-6">
+                        </div>
+                        <hr>
+                        <div class="row">
+
+                            <div class="col-md-4">
                                 <x-admin.select-field
-                                    name="category"
-                                    label="Category"
-                                    :options="[
-                                        'beginner' => 'Beginner',
-                                        'intermediate' => 'Intermediate',
-                                        'advanced' => 'Advanced',
-                                        'professional' => 'Professional',
-                                        'mixed' => 'Mixed',
-                                        'mens' => 'Men\'s',
-                                        'womens' => 'Women\'s'
-                                    ]"
-                                    placeholder="Select category"
+                                    name="type"
+                                    label="Event Type"
+                                    :options="$eventTypes"
+                                    placeholder="Select event type"
+                                    :required="true"
+                                />
+                            </div>
+                            <div class="col-md-4">
+                                <x-admin.select-field
+                                    name="status"
+                                    label="Status"
+                                    :options="$eventStatuses"
+                                    value="draft"
                                     :required="true"
                                 />
                             </div>
                         </div>
-                        
+
                         <div class="row">
                             <div class="col-md-4">
                                 <x-admin.text-field
@@ -100,37 +124,41 @@
                                     min="2"
                                 />
                             </div>
-                            
-                            <div class="col-md-4">
+                            <div class="col-md-4" id="max-groups-wrapper" style="display: none;">
                                 <x-admin.text-field
-                                    name="entry_fee"
-                                    label="Entry Fee"
+                                    name="max_groups"
+                                    label="Maximum Groups"
                                     type="number"
-                                    placeholder="0"
-                                    helpText="Leave 0 for free events"
-                                    step="0.01"
+                                    placeholder="Enter max groups"
+                                    min="2"
                                 />
                             </div>
-                            
-                            <div class="col-md-4">
-                                <x-admin.select-field
-                                    name="status"
-                                    label="Status"
-                                    :options="[
-                                        'draft' => 'Draft',
-                                        'published' => 'Published',
-                                        'registration_open' => 'Registration Open',
-                                        'registration_closed' => 'Registration Closed',
-                                        'ongoing' => 'Ongoing',
-                                        'completed' => 'Completed',
-                                        'cancelled' => 'Cancelled'
-                                    ]"
-                                    value="draft"
-                                    :required="true"
+                            <div class="col-md-4" id="max-teams-in-group-wrapper" style="display: none;">
+                                <x-admin.text-field
+                                    name="max_teams_in_group"
+                                    label="Maximum Teams in Group"
+                                    type="number"
+                                    placeholder="Enter max teams in group"
+                                    min="2"
                                 />
                             </div>
                         </div>
-                        
+                        <hr>
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h5 class="mb-0">Event Pricing</h5>
+                                <button type="button" class="btn btn-sm btn-primary" id="add-pricing-btn">
+                                    <i class="bi bi-plus-circle me-1"></i>Add Pricing Tier
+                                </button>
+                            </div>
+                            
+                            <div id="pricing-container">
+                                <!-- Pricing items will be added here dynamically -->
+                            </div>
+                            
+                            <small class="text-muted">Add pricing tiers for different registration periods (e.g., Early Bird, Regular, Late Registration)</small>
+                        </div>
+                        <hr>
                         <div class="row">
                             <div class="col-12">
                                 <x-admin.text-field
@@ -196,6 +224,177 @@
 @push('scripts')
 <script src="{{ asset('assets/js/custom/ajax-request.js') }}"></script>
 <script>
+    // Pricing management
+    let pricingCount = 0;
+    const pricingContainer = document.getElementById('pricing-container');
+    const addPricingBtn = document.getElementById('add-pricing-btn');
+    
+    function createPricingItem(index) {
+        const pricingItem = document.createElement('div');
+        pricingItem.className = 'pricing-item p-3 border rounded mb-3';
+        pricingItem.setAttribute('data-pricing-index', index);
+        
+        pricingItem.innerHTML = `
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <h6 class="mb-0">Pricing Tier ${index + 1}</h6>
+                <button type="button" class="btn btn-sm btn-danger remove-pricing-btn">
+                    <i class="bi bi-trash"></i> Remove
+                </button>
+            </div>
+            
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label class="form-label">
+                            Pricing Title
+                            <span class="text-danger">*</span>
+                        </label>
+                        <input 
+                            type="text"
+                            class="form-control"
+                            name="pricing_name[]"
+                            placeholder="e.g., Early Bird, Regular, VIP"
+                            required
+                        >
+                    </div>
+                </div>
+                
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label class="form-label">
+                            Price (IDR)
+                            <span class="text-danger">*</span>
+                        </label>
+                        <input 
+                            type="number"
+                            class="form-control"
+                            name="pricing_price[]"
+                            placeholder="0"
+                            min="0"
+                            step="1000"
+                            required
+                        >
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label class="form-label">Start Date</label>
+                        <input 
+                            type="datetime-local"
+                            class="form-control"
+                            name="pricing_start_date[]"
+                        >
+                        <small class="text-muted">When this pricing becomes active</small>
+                    </div>
+                </div>
+                
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label class="form-label">End Date</label>
+                        <input 
+                            type="datetime-local"
+                            class="form-control"
+                            name="pricing_end_date[]"
+                        >
+                        <small class="text-muted">When this pricing expires</small>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-12">
+                    <div class="mb-3">
+                        <label class="form-label">Description</label>
+                        <textarea 
+                            class="form-control"
+                            name="pricing_description[]"
+                            rows="2"
+                            placeholder="Optional description for this pricing tier"
+                        ></textarea>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        return pricingItem;
+    }
+    
+    function addPricingItem() {
+        const pricingItem = createPricingItem(pricingCount);
+        pricingContainer.appendChild(pricingItem);
+        
+        // Add event listener to remove button
+        const removeBtn = pricingItem.querySelector('.remove-pricing-btn');
+        removeBtn.addEventListener('click', function() {
+            removePricingItem(pricingItem);
+        });
+        
+        pricingCount++;
+    }
+    
+    function removePricingItem(item) {
+        item.remove();
+        updatePricingNumbers();
+    }
+    
+    function updatePricingNumbers() {
+        const items = pricingContainer.querySelectorAll('.pricing-item');
+        items.forEach((item, index) => {
+            item.setAttribute('data-pricing-index', index);
+            const title = item.querySelector('h6');
+            title.textContent = `Pricing Tier ${index + 1}`;
+        });
+    }
+    
+    // Add pricing button click handler
+    addPricingBtn.addEventListener('click', addPricingItem);
+    
+    // Handle event type change to show/hide league-specific fields
+    const eventTypeSelect = document.querySelector('select[name="type"]');
+    const categorySelect = document.querySelector('select[name="category"]');
+    const maxGroupsWrapper = document.getElementById('max-groups-wrapper');
+    const maxTeamsInGroupWrapper = document.getElementById('max-teams-in-group-wrapper');
+    const maxGroupsInput = document.querySelector('input[name="max_groups"]');
+    const maxTeamsInGroupInput = document.querySelector('input[name="max_teams_in_group"]');
+    
+    function toggleLeagueFields() {
+        const selectedType = eventTypeSelect.value;
+        
+        if (selectedType === 'league') {
+            maxGroupsWrapper.style.display = 'block';
+            maxTeamsInGroupWrapper.style.display = 'block';
+            maxGroupsInput.setAttribute('required', 'required');
+            maxTeamsInGroupInput.setAttribute('required', 'required');
+        } else {
+            maxGroupsWrapper.style.display = 'none';
+            maxTeamsInGroupWrapper.style.display = 'none';
+            maxGroupsInput.removeAttribute('required');
+            maxTeamsInGroupInput.removeAttribute('required');
+            maxGroupsInput.value = '';
+            maxTeamsInGroupInput.value = '';
+        }
+    }
+    
+    // Initialize on page load
+    toggleLeagueFields();
+    
+    // Listen for changes on event type
+    eventTypeSelect.addEventListener('change', toggleLeagueFields);
+    
+    // Listen for changes on category
+    categorySelect.addEventListener('change', function() {
+        const selectedCategory = this.value;
+        console.log('Category changed to:', selectedCategory);
+        // Add your custom logic here based on category selection
+        // For example:
+        // if (selectedCategory === 'professional') {
+        //     // Show/hide certain fields
+        // }
+    });
+    
     new AjaxForm('#event-form', {
         showLoader: true,
         redirectDelay: 1500,
