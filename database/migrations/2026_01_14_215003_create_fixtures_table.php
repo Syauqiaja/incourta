@@ -21,6 +21,7 @@ return new class extends Migration
             $table->foreignId('first_team_id')->constrained('team_events')->cascadeOnDelete();
             $table->foreignId('second_team_id')->constrained('team_events')->cascadeOnDelete();
             $table->foreignId('winner_team_id')->nullable()->constrained('team_events')->nullOnDelete();
+            $table->string('scoring_type')->default('americano')->index();
             $table->string('status')->default('scheduled')->index();
             $table->timestamps();
         });

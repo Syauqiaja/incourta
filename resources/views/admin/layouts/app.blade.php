@@ -5,7 +5,7 @@
     @include('admin.layouts.head-meta', ['title' => @$title ?? config('app.name', 'Incourta Padel')])
     @include('admin.layouts.head-css')
     @stack('css')
-    @vite(['resources/js/app.js'])
+    @vite(['resources/js/echo.js'])
 </head>
 
 <body data-pc-preset="preset-1" data-pc-sidebar-theme="light" data-pc-sidebar-caption="true" data-pc-direction="ltr"

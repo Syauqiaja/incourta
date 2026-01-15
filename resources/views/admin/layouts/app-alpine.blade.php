@@ -5,7 +5,7 @@
     @include('admin.layouts.head-meta', ['title' => @$title ?? config('app.name', 'Incourta Padel')])
     @include('admin.layouts.head-css')
     @stack('css')
-    @vite(['resources/js/app.js'])
+    @vite(['resources/js/echo.js'])
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
 
