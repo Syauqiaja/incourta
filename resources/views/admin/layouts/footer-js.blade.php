@@ -14,6 +14,7 @@
     };
 </script>
 <script src="{{ asset('assets/js/listener.js') }}"></script>
+
 <script>
     layout_change('light');
 </script>
