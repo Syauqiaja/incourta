@@ -1,5 +1,6 @@
 <?php
 
+use App\Events\AdminWelcome;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
@@ -37,3 +38,9 @@ Route::middleware('auth')->prefix('events')->name('events.')->group(function () 
     Route::put('/{event}', [App\Http\Controllers\Events\EventController::class, 'update'])->name('update');
     Route::delete('/{event}', [App\Http\Controllers\Events\EventController::class, 'destroy'])->name('destroy');
 });
+
+Route::get('/test-reverb', function () {
+    event(new AdminWelcome(Auth::id()));
+
+    return 'Private event broadcasted';
+})->middleware('auth');

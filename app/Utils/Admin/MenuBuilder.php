@@ -11,10 +11,18 @@ class MenuBuilder
             'menu' => [
                 [
                     'label' => 'Dashboard',
-                    'active' => ['home'],
-                    'route' => 'dashboard',
+                    'active' => ['admin.home.*'],
+                    'route' => 'admin.home.index',
                     'icon' => 'ti ti-dashboard',
-                    'can' => ['dashboard>read'],
+                    'can' => ['admin>home>read'],
+                    'submenu' => null,
+                ],
+                [
+                    'label' => 'Event',
+                    'active' => ['admin.events.*'],
+                    'route' => 'admin.events.index',
+                    'icon' => "fas fa-trophy",
+                    'can' => ['admin>event>read'],
                     'submenu' => null,
                 ]
             ],
