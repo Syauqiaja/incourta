@@ -176,7 +176,7 @@
                                 <x-admin.image-upload
                                     name="event_images"
                                     label="Event Images"
-                                    :maxFiles="5"
+                                    :maxFiles="1"
                                     :maxFilesize="2"
                                     helpText="Upload event photos, posters, or venue images (max 5 images, 2MB each)"
                                 />

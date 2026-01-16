@@ -13,16 +13,27 @@ use Illuminate\Support\Facades\Validator;
 
 class EventController extends Controller
 {
-    public function index(){
-        return view('admin.events.index');
+    public function index()
+    {
+        $events = Event::with(['pricings', 'creator'])
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
+
+        return view('admin.events.index', compact('events'));
     }
-    
-    public function create(){
+
+    public function create()
+    {
         return view('admin.events.create');
     }
-    
+
     public function store(Request $request)
     {
+        // return response()->json([
+        //     'success' => true,
+        //     'message' => $request->event_images,
+        // ]);
+
         // Validation rules
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
@@ -36,7 +47,7 @@ class EventController extends Controller
             'max_groups' => 'nullable|required_if:type,league|integer|min:2',
             'max_teams_in_group' => 'nullable|required_if:type,league|integer|min:2',
             'description' => 'nullable|string',
-            'event_images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'event_images.*' => 'required|string',
             'registration_deadline' => 'nullable|date|before:start_date',
             'prize_pool' => 'nullable|string|max:255',
             'pricing_name.*' => 'nullable|string|max:255',
@@ -54,22 +65,10 @@ class EventController extends Controller
             ], 422);
         }
 
+        $image = \json_decode($request->event_images)[0] ?? null;
+
         try {
             DB::beginTransaction();
-
-            // Handle image upload
-            $imagePath = null;
-            if ($request->hasFile('event_images')) {
-                $images = $request->file('event_images');
-                // For now, we'll use the first image as the main image
-                // You can modify this to handle multiple images differently
-                if (is_array($images) && count($images) > 0) {
-                    $image = $images[0];
-                    $imagePath = $image->store('events', 'public');
-                } elseif (!is_array($images)) {
-                    $imagePath = $images->store('events', 'public');
-                }
-            }
 
             // Create event
             $event = Event::create([
@@ -78,7 +77,7 @@ class EventController extends Controller
                 'status' => $request->status,
                 'category' => $request->category,
                 'description' => $request->description,
-                'image' => $imagePath,
+                'image' => Storage::url($image),
                 'start_time' => $request->start_date,
                 'end_time' => $request->end_date,
                 'location' => $request->location,
@@ -113,14 +112,8 @@ class EventController extends Controller
                 'message' => 'Event created successfully',
                 'redirect' => route('admin.events.index')
             ]);
-
         } catch (\Exception $e) {
             DB::rollBack();
-            
-            // Delete uploaded image if event creation fails
-            if ($imagePath) {
-                Storage::disk('public')->delete($imagePath);
-            }
 
             return response()->json([
                 'success' => false,
@@ -128,12 +121,49 @@ class EventController extends Controller
             ], 500);
         }
     }
-    
-    public function show(){
-        return view('admin.events.detail');
+
+    public function show($id)
+    {
+        $event = Event::with(['pricings', 'creator'])->findOrFail($id);
+        return view('admin.events.detail', compact('event'));
     }
-    
-    public function update(){}
-    
-    public function delete(){}
+
+    public function edit($id)
+    {
+        $event = Event::with('pricings')->findOrFail($id);
+        return view('admin.events.edit', compact('event'));
+    }
+
+    public function update() {}
+
+    public function destroy($id)
+    {
+        try {
+            DB::beginTransaction();
+
+            $event = Event::findOrFail($id);
+
+            // Delete event image if exists
+            if ($event->image) {
+                Storage::disk('public')->delete($event->image);
+            }
+
+            // Delete event (pricings will be cascade deleted)
+            $event->delete();
+
+            DB::commit();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Event deleted successfully'
+            ]);
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to delete event: ' . $e->getMessage()
+            ], 500);
+        }
+    }
 }
