@@ -109,6 +109,7 @@
         }
         
         const uploadedPaths{{ Str::camel($name) }} = [];
+        const existingFiles{{ Str::camel($name) }} = @json($existingFiles ?? []);
         
         // Initialize Dropzone
         const dropzone{{ Str::camel($name) }} = new DropzoneHandler('#dropzone-{{ $name }}', {
@@ -136,6 +137,14 @@
                         updateHiddenInput{{ Str::camel($name) }}();
                     }
                 }
+                // Handle existing files removal
+                if (file.existingPath) {
+                    const index = uploadedPaths{{ Str::camel($name) }}.indexOf(file.existingPath);
+                    if (index > -1) {
+                        uploadedPaths{{ Str::camel($name) }}.splice(index, 1);
+                        updateHiddenInput{{ Str::camel($name) }}();
+                    }
+                }
             },
             
             onError: (file, errorMessage) => {
@@ -146,6 +155,33 @@
                 });
             }
         });
+        
+        // Get the actual Dropzone instance
+        const dzInstance{{ Str::camel($name) }} = dropzone{{ Str::camel($name) }}.getInstance();
+        
+        // Add existing files after initialization
+        if (existingFiles{{ Str::camel($name) }}.length > 0) {
+            existingFiles{{ Str::camel($name) }}.forEach(filePath => {
+                const mockFile = { 
+                    name: filePath.split('/').pop(), 
+                    size: 12345,
+                    existingPath: filePath
+                };
+                
+                // Display existing file with full storage URL
+                dzInstance{{ Str::camel($name) }}.displayExistingFile(mockFile, '/storage/' + filePath);
+                
+                // Add to uploaded paths
+                uploadedPaths{{ Str::camel($name) }}.push(filePath);
+            });
+            
+            // Adjust maxFiles to account for existing files
+            const fileCountOnServer = existingFiles{{ Str::camel($name) }}.length;
+            dzInstance{{ Str::camel($name) }}.options.maxFiles = dzInstance{{ Str::camel($name) }}.options.maxFiles - fileCountOnServer;
+        }
+        
+        // Initialize hidden input
+        updateHiddenInput{{ Str::camel($name) }}();
         
         function updateHiddenInput{{ Str::camel($name) }}() {
             const input = document.getElementById('{{ $name }}-input');
