@@ -16,7 +16,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('event_id')->constrained('events')->cascadeOnDelete();
             $table->string('event_type')->default('championship')->index();
-            $table->foreignId('group_id')->nullable()->constrained()->nullOnDelete();
+            $table->foreignId('group_id')->nullable()->nullOnDelete();
             $table->string('round_name')->nullable(); // Quarter Final, Semi Final
             $table->foreignId('first_team_id')->constrained('team_events')->cascadeOnDelete();
             $table->foreignId('second_team_id')->constrained('team_events')->cascadeOnDelete();

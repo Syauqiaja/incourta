@@ -1,7 +1,7 @@
 @extends('admin.layouts.app')
 @section('content')
     <!-- [ breadcrumb ] start -->
-    {{ Breadcrumbs::render('admin.events.show') }}
+    {{ Breadcrumbs::render('admin.events.show', $event) }}
     <!-- [ breadcrumb ] end -->
 
 

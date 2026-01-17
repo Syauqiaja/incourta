@@ -18,7 +18,8 @@ class ImageUpload extends Component
         public int $maxFilesize = 2,
         public bool $required = false,
         public ?string $helpText = null,
-        public ?string $uploadUrl = null
+        public ?string $uploadUrl = null,
+        public array $existingFiles = []
     )
     {
         $this->uploadUrl = $uploadUrl ?? route('admin.upload.image');

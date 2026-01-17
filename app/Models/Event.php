@@ -11,6 +11,7 @@ class Event extends Model
     protected $fillable = [
         'title',
         'event_type',
+        'status',
         'description',
         'image',
         'start_time',
@@ -20,10 +21,26 @@ class Event extends Model
         'max_participants',
         'max_group',
         'max_participants_in_group',
+        'category',
+        'prize_pool',
+        'registration_deadline',
+        'points_win',
+        'points_lose',
     ];
 
     protected $casts = [
         'start_time' => 'datetime',
         'end_time' => 'datetime',
+        'registration_deadline' => 'datetime',
     ];
+
+    public function pricings()
+    {
+        return $this->hasMany(EventPricing::class);
+    }
+
+    public function creator()
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
 }

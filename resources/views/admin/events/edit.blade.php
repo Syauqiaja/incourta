@@ -23,7 +23,7 @@
 @extends('admin.layouts.app')
 @section('content')
     <!-- [ breadcrumb ] start -->
-    {{ Breadcrumbs::render('admin.events.create') }}
+    {{ Breadcrumbs::render('admin.events.edit', $event) }}
     <!-- [ breadcrumb ] end -->
 
     <!-- [ Main Content ] start -->
@@ -31,11 +31,12 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
-                    <h5>Create New Event</h5>
+                    <h5>Edit Event: {{ $event->title }}</h5>
                 </div>
                 <div class="card-body">
-                    <form action="{{ route('admin.events.store') }}" method="POST" id="event-form">
+                    <form action="{{ route('admin.events.update', $event->id) }}" method="POST" id="event-form">
                         @csrf
+                        @method('PUT')
                         
                         <div class="row">
                             <div class="col-md-8">
@@ -43,6 +44,7 @@
                                     name="name"
                                     label="Event Name"
                                     placeholder="Enter event name"
+                                    :value="$event->title"
                                     :required="true"
                                     helpText="The name of the event as it will appear to users"
                                 />
@@ -53,6 +55,7 @@
                                     name="category"
                                     label="Category"
                                     :options="$matchCategories"
+                                    :value="$event->category"
                                     placeholder="Select category"
                                     :required="true"
                                 />
@@ -65,6 +68,7 @@
                                     name="start_date"
                                     label="Start Date"
                                     type="datetime-local"
+                                    :value="$event->start_time ? $event->start_time->format('Y-m-d\TH:i') : ''"
                                     :required="true"
                                 />
                             </div>
@@ -74,6 +78,7 @@
                                     name="end_date"
                                     label="End Date"
                                     type="datetime-local"
+                                    :value="$event->end_time ? $event->end_time->format('Y-m-d\TH:i') : ''"
                                     :required="true"
                                 />
                             </div>
@@ -86,6 +91,7 @@
                                     label="Location"
                                     type="textarea"
                                     placeholder="Enter event location"
+                                    :value="$event->location"
                                     :required="true"
                                 />
                             </div>
@@ -98,6 +104,7 @@
                                     name="type"
                                     label="Event Type"
                                     :options="$eventTypes"
+                                    :value="$event->event_type"
                                     placeholder="Select event type"
                                     :required="true"
                                 />
@@ -107,7 +114,7 @@
                                     name="status"
                                     label="Status"
                                     :options="$eventStatuses"
-                                    value="draft"
+                                    :value="$event->status"
                                     :required="true"
                                 />
                             </div>
@@ -120,25 +127,28 @@
                                     label="Maximum Teams"
                                     type="number"
                                     placeholder="Enter max teams"
+                                    :value="$event->max_participants"
                                     :required="true"
                                     min="2"
                                 />
                             </div>
-                            <div class="col-md-4" id="max-groups-wrapper" style="display: none;">
+                            <div class="col-md-4" id="max-groups-wrapper" style="display: {{ $event->event_type === 'league' ? 'block' : 'none' }};">
                                 <x-admin.text-field
                                     name="max_groups"
                                     label="Maximum Groups"
                                     type="number"
                                     placeholder="Enter max groups"
+                                    :value="$event->max_group"
                                     min="2"
                                 />
                             </div>
-                            <div class="col-md-4" id="max-teams-in-group-wrapper" style="display: none;">
+                            <div class="col-md-4" id="max-teams-in-group-wrapper" style="display: {{ $event->event_type === 'league' ? 'block' : 'none' }};">
                                 <x-admin.text-field
                                     name="max_teams_in_group"
                                     label="Maximum Teams in Group"
                                     type="number"
                                     placeholder="Enter max teams in group"
+                                    :value="$event->max_participants_in_group"
                                     min="2"
                                 />
                             </div>
@@ -153,7 +163,7 @@
                             </div>
                             
                             <div id="pricing-container">
-                                <!-- Pricing items will be added here dynamically -->
+                                <!-- Existing pricing items will be loaded here -->
                             </div>
                             
                             <small class="text-muted">Add pricing tiers for different registration periods (e.g., Early Bird, Regular, Late Registration)</small>
@@ -166,6 +176,7 @@
                                     label="Description"
                                     type="textarea"
                                     placeholder="Enter event description"
+                                    :value="$event->description"
                                     helpText="Provide details about the event, rules, prizes, etc."
                                 />
                             </div>
@@ -173,12 +184,22 @@
                         
                         <div class="row">
                             <div class="col-12">
+                                @php
+                                    $existingImage = [];
+                                    if ($event->image) {
+                                        // The image is already stored as full URL like /storage/uploads/events/xxx.png
+                                        // We need to extract just the relative path: uploads/events/xxx.png
+                                        $imagePath = str_replace('/storage/', '', $event->image);
+                                        $existingImage = [$imagePath];
+                                    }
+                                @endphp
                                 <x-admin.image-upload
                                     name="event_images"
                                     label="Event Images"
                                     :maxFiles="1"
                                     :maxFilesize="2"
-                                    helpText="Upload event photos, posters, or venue images (max 5 images, 2MB each)"
+                                    :existingFiles="$existingImage"
+                                    helpText="Upload event photos, posters, or venue images (max 1 image, 2MB)"
                                 />
                             </div>
                         </div>
@@ -189,6 +210,7 @@
                                     name="registration_deadline"
                                     label="Registration Deadline"
                                     type="datetime-local"
+                                    :value="$event->registration_deadline ? $event->registration_deadline->format('Y-m-d\TH:i') : ''"
                                     helpText="Optional: Last date for registration"
                                 />
                             </div>
@@ -198,6 +220,7 @@
                                     name="prize_pool"
                                     label="Prize Pool"
                                     placeholder="e.g., $5,000 or Trophies & Medals"
+                                    :value="$event->prize_pool"
                                     helpText="Optional: Prize information"
                                 />
                             </div>
@@ -206,9 +229,9 @@
                         <div class="row mt-4">
                             <div class="col-12">
                                 <button type="submit" class="btn btn-primary">
-                                    <i class="bi bi-send me-2"></i>Create Event
+                                    <i class="bi bi-save me-2"></i>Update Event
                                 </button>
-                                <a href="{{ route('admin.events.index') }}" class="btn btn-danger">
+                                <a href="{{ route('admin.events.index') }}" class="btn btn-secondary">
                                     <i class="bi bi-x-circle me-2"></i>Cancel
                                 </a>
                             </div>
@@ -225,16 +248,28 @@
 <script src="{{ asset('assets/js/custom/ajax-request.js') }}"></script>
 <script>
     // Pricing management
-    let pricingCount = 0;
+    let pricingCount = {{ $event->pricings->count() }};
     const pricingContainer = document.getElementById('pricing-container');
     const addPricingBtn = document.getElementById('add-pricing-btn');
     
-    function createPricingItem(index) {
+    // Existing pricings data
+    const existingPricings = @json($event->pricings);
+    
+    function createPricingItem(index, data = null) {
         const pricingItem = document.createElement('div');
         pricingItem.className = 'pricing-item p-3 border rounded mb-3';
         pricingItem.setAttribute('data-pricing-index', index);
         
+        const pricingId = data?.id || '';
+        const pricingName = data?.name || '';
+        const pricingPrice = data?.price || '';
+        const pricingStartDate = data?.start_date ? new Date(data.start_date).toISOString().slice(0, 16) : '';
+        const pricingEndDate = data?.end_date ? new Date(data.end_date).toISOString().slice(0, 16) : '';
+        const pricingDescription = data?.description || '';
+        
         pricingItem.innerHTML = `
+            ${pricingId ? `<input type="hidden" name="pricing_id[]" value="${pricingId}">` : ''}
+            
             <div class="d-flex justify-content-between align-items-center mb-2">
                 <h6 class="mb-0">Pricing Tier ${index + 1}</h6>
                 <button type="button" class="btn btn-sm btn-danger remove-pricing-btn">
@@ -254,6 +289,7 @@
                             class="form-control"
                             name="pricing_name[]"
                             placeholder="e.g., Early Bird, Regular, VIP"
+                            value="${pricingName}"
                             required
                         >
                     </div>
@@ -272,6 +308,7 @@
                             placeholder="0"
                             min="0"
                             step="1000"
+                            value="${pricingPrice}"
                             required
                         >
                     </div>
@@ -286,6 +323,7 @@
                             type="datetime-local"
                             class="form-control"
                             name="pricing_start_date[]"
+                            value="${pricingStartDate}"
                         >
                         <small class="text-muted">When this pricing becomes active</small>
                     </div>
@@ -298,6 +336,7 @@
                             type="datetime-local"
                             class="form-control"
                             name="pricing_end_date[]"
+                            value="${pricingEndDate}"
                         >
                         <small class="text-muted">When this pricing expires</small>
                     </div>
@@ -313,7 +352,7 @@
                             name="pricing_description[]"
                             rows="2"
                             placeholder="Optional description for this pricing tier"
-                        ></textarea>
+                        >${pricingDescription}</textarea>
                     </div>
                 </div>
             </div>
@@ -322,8 +361,8 @@
         return pricingItem;
     }
     
-    function addPricingItem() {
-        const pricingItem = createPricingItem(pricingCount);
+    function addPricingItem(data = null) {
+        const pricingItem = createPricingItem(pricingCount, data);
         pricingContainer.appendChild(pricingItem);
         
         // Add event listener to remove button
@@ -349,8 +388,13 @@
         });
     }
     
+    // Load existing pricing items
+    existingPricings.forEach(pricing => {
+        addPricingItem(pricing);
+    });
+    
     // Add pricing button click handler
-    addPricingBtn.addEventListener('click', addPricingItem);
+    addPricingBtn.addEventListener('click', () => addPricingItem());
     
     // Handle event type change to show/hide league-specific fields
     const eventTypeSelect = document.querySelector('select[name="type"]');
@@ -388,11 +432,6 @@
     categorySelect.addEventListener('change', function() {
         const selectedCategory = this.value;
         console.log('Category changed to:', selectedCategory);
-        // Add your custom logic here based on category selection
-        // For example:
-        // if (selectedCategory === 'professional') {
-        //     // Show/hide certain fields
-        // }
     });
     
     new AjaxForm('#event-form', {
