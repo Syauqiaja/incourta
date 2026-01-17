@@ -34,6 +34,15 @@ class Event extends Model
         'registration_deadline' => 'datetime',
     ];
 
+    public function teams()
+    {
+        return $this->hasMany(TeamEvent::class);
+    }
+
+    public function groups()
+    {
+        return $this->hasMany(Group::class);
+    }
     public function pricings()
     {
         return $this->hasMany(EventPricing::class);

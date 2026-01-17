@@ -26,7 +26,7 @@
         </div>
     </div>
     <!-- [ Main Content ] end -->
-
+    @yield('modal-section')
     @include('admin.layouts.footer-block')
     @include('admin.layouts.footer-js')
     @stack('scripts')

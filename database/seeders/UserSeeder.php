@@ -20,8 +20,6 @@ class UserSeeder extends Seeder
             $superadmin->assignRole('superadmin');
             $admin = User::factory()->create(['password' => Hash::make('password')]);
             $admin->assignRole('admin');
-            $user = User::factory()->create(['password' => Hash::make('password')]);
-            $user->assignRole('user');
         }
     }
 }
