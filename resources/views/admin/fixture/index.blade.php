@@ -17,15 +17,15 @@
                 <div class="card-body" x-data="matchmaking(@js($fixtures))" x-init="init()">
                     <div class="row g-3">
                         <template x-for="match in matches" :key="match.match_id">
-                            <div class="col-md-6 col-lg-4">
+                            <div class="col-md-12">
                                 <div class="card shadow-sm">
                                     <div class="card-header text-center fw-bold">
                                         Match #<span x-text="match.match_id"></span>
                                     </div>
 
-                                    <div class="card-body">
+                                    <div class="card-body row">
                                         <!-- SIDE 1 -->
-                                        <div class="mb-2">
+                                        <div class="col-6 mb-2">
                                             <div class="text-muted small mb-1">Side 1</div>
                                             <div class="list-group team-drop" :data-match="match.match_id" data-side="1">
                                                 <template x-for="item in match.teams.filter(t => t.side === 1)"
@@ -40,7 +40,7 @@
                                         </div>
 
                                         <!-- SIDE 2 -->
-                                        <div>
+                                        <div class="col-6 mb-2">
                                             <div class="text-muted small mb-1">Side 2</div>
                                             <div class="list-group team-drop" :data-match="match.match_id" data-side="2">
                                                 <template x-for="item in match.teams.filter(t => t.side === 2)"
