@@ -39,4 +39,8 @@ class FixtureController extends Controller
             ], 500);
         }
     }
+    public function data($id, Request $request)
+    {
+        Fixture::with(['firstteam', 'secondteam'])->where("event_id", $id);
+    }
 }

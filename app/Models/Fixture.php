@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use App\Enum\FixtureStatus;
-use App\Enum\ScoringType;
+use App\Enums\FixtureStatus;
+use App\Enums\ScoringType;
 use App\EventType;
 use Illuminate\Database\Eloquent\Model;
 
