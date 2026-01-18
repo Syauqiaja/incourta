@@ -2,6 +2,7 @@
 
 namespace App\View\Components\Events;
 
+use App\Models\Event;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
@@ -12,18 +13,17 @@ class EventCard extends Component
      * Create a new component instance.
      */
     public function __construct(
-        public string $type,
-        public string $title,
-        public string $dateRange,
-        public string $location,
-        public string $category,
-        public string $teams,
-        public string $entryFee,
+        public Event $event,
         public string $buttonText = 'Register Now',
-        public string $buttonLink = '#'
+        public ?string $buttonLink = null
     )
     {
-        //
+        // Set default button link if not provided
+        if (!$this->buttonLink) {
+            $this->buttonLink = $this->event->slug 
+                ? route('events.show', $this->event->slug)
+                : '#';
+        }
     }
 
     /**

@@ -2,14 +2,20 @@
 
 namespace App\Models;
 
+use App\Enums\EventStatus;
+use App\EventType;
+use App\MatchCategories;
+use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Event extends Model
 {
-    use HasFactory;
+    use HasFactory, Sluggable;
+    
     protected $fillable = [
         'title',
+        'slug',
         'event_type',
         'status',
         'description',
@@ -32,7 +38,22 @@ class Event extends Model
         'start_time' => 'datetime',
         'end_time' => 'datetime',
         'registration_deadline' => 'datetime',
+        'status' => EventStatus::class,
+        'category' => MatchCategories::class,
+        'event_type' => EventType::class,
     ];
+
+    /**
+     * Return the sluggable configuration array for this model.
+     */
+    public function sluggable(): array
+    {
+        return [
+            'slug' => [
+                'source' => 'title'
+            ]
+        ];
+    }
 
     public function pricings()
     {

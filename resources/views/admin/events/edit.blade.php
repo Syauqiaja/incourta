@@ -55,7 +55,7 @@
                                     name="category"
                                     label="Category"
                                     :options="$matchCategories"
-                                    :value="$event->category"
+                                    :value="$event->category->value"
                                     placeholder="Select category"
                                     :required="true"
                                 />
@@ -104,7 +104,7 @@
                                     name="type"
                                     label="Event Type"
                                     :options="$eventTypes"
-                                    :value="$event->event_type"
+                                    :value="$event->event_type->value"
                                     placeholder="Select event type"
                                     :required="true"
                                 />
@@ -114,7 +114,7 @@
                                     name="status"
                                     label="Status"
                                     :options="$eventStatuses"
-                                    :value="$event->status"
+                                    :value="$event->status->value"
                                     :required="true"
                                 />
                             </div>
@@ -132,7 +132,7 @@
                                     min="2"
                                 />
                             </div>
-                            <div class="col-md-4" id="max-groups-wrapper" style="display: {{ $event->event_type === 'league' ? 'block' : 'none' }};">
+                            <div class="col-md-4" id="max-groups-wrapper" style="display: {{ $event->event_type->value === 'league' ? 'block' : 'none' }};">
                                 <x-admin.text-field
                                     name="max_groups"
                                     label="Maximum Groups"
@@ -142,7 +142,7 @@
                                     min="2"
                                 />
                             </div>
-                            <div class="col-md-4" id="max-teams-in-group-wrapper" style="display: {{ $event->event_type === 'league' ? 'block' : 'none' }};">
+                            <div class="col-md-4" id="max-teams-in-group-wrapper" style="display: {{ $event->event_type->value === 'league' ? 'block' : 'none' }};">
                                 <x-admin.text-field
                                     name="max_teams_in_group"
                                     label="Maximum Teams in Group"

@@ -39,85 +39,12 @@
         </div>
         
         <div class="row g-4">
-            <!-- Tournament Card 1 -->
-            <div class="col-md-6 col-lg-4">
-                <x-events.event-card
-                    type="Tournament"
-                    title="Summer Championship 2026"
-                    dateRange="Feb 15 - Feb 20, 2026"
-                    location="Padel Arena Jakarta"
-                    category="Mixed Doubles"
-                    teams="16/32"
-                    entryFee="$5,000"
-                />
-            </div>
-
-            <!-- Tournament Card 2 -->
-            <div class="col-md-6 col-lg-4">
-                <x-events.event-card
-                    type="League"
-                    title="Spring League 2026"
-                    dateRange="Feb 1 - Apr 30, 2026"
-                    location="Multiple Venues"
-                    category="Men's Doubles"
-                    teams="24/30"
-                    entryFee="12 Weeks"
-                    buttonText="Join League"
-                />
-            </div>
-
-            <!-- Tournament Card 3 -->
-            <div class="col-md-6 col-lg-4">
-                <x-events.event-card
-                    type="Tournament"
-                    title="Beginner's Cup"
-                    dateRange="Feb 8 - Feb 9, 2026"
-                    location="Padel Club Bandung"
-                    category="Beginner"
-                    teams="8/16"
-                    entryFee="Free"
-                />
-            </div>
-
-            <!-- Tournament Card 4 -->
-            <div class="col-md-6 col-lg-4">
-                <x-events.event-card
-                    type="Tournament"
-                    title="Women's Open"
-                    dateRange="Mar 5 - Mar 7, 2026"
-                    location="Padel Center Surabaya"
-                    category="Women's Doubles"
-                    teams="12/20"
-                    entryFee="$3,500"
-                />
-            </div>
-
-            <!-- League Card -->
-            <div class="col-md-6 col-lg-4">
-                <x-events.event-card
-                    type="League"
-                    title="Elite Division"
-                    dateRange="Mar 1 - May 31, 2026"
-                    location="Premium Courts Jakarta"
-                    category="Advanced"
-                    teams="18/20"
-                    entryFee="$10,000"
-                    buttonText="Join League"
-                />
-            </div>
-
-            <!-- Tournament Card 5 -->
-            <div class="col-md-6 col-lg-4">
-                <x-events.event-card
-                    type="Tournament"
-                    title="City Championship"
-                    dateRange="Mar 20 - Mar 22, 2026"
-                    location="City Sports Complex"
-                    category="All Categories"
-                    teams="28/48"
-                    entryFee="$8,000"
-                />
-            </div>
+            @foreach ($events as $event)
+                <div class="col-md-6 col-lg-4">
+                    <x-events.event-card :event="$event"
+                    />
+                </div>
+            @endforeach
         </div>
     </div>
 </section>

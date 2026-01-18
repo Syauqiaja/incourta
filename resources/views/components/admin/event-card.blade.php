@@ -16,11 +16,11 @@
             <div class="col-md-7">
                 <div class="d-flex align-items-center gap-2 mb-2">
                     <h5 class="mb-0">{{ $event->title }}</h5>
-                    <span class="badge bg-{{ $event->status === 'published' ? 'success' : ($event->status === 'draft' ? 'secondary' : 'warning') }}">
-                        {{ ucfirst($event->status) }}
+                    <span class="badge bg-{{ $event->status->value === 'published' ? 'success' : ($event->status->value === 'draft' ? 'secondary' : 'warning') }}">
+                        {{ ucfirst($event->status->value) }}
                     </span>
-                    <span class="badge bg-primary">{{ ucwords(str_replace('_', ' ', $event->event_type)) }}</span>
-                    <span class="badge bg-info">{{ ucwords($event->category) }}</span>
+                    <span class="badge bg-primary">{{ ucwords(str_replace('_', ' ', $event->event_type->value)) }}</span>
+                    <span class="badge bg-info">{{ ucwords($event->category->value) }}</span>
                 </div>
                 
                 <div class="text-muted small mb-2">
@@ -67,10 +67,10 @@
             
             <div class="col-md-3 text-end">
                 <div class="d-flex flex-column gap-2">
-                    <a href="{{ route('admin.events.show', $event->id) }}" class="btn btn-info btn-sm">
+                    <a href="{{ route('admin.events.show', $event->slug) }}" class="btn btn-info btn-sm">
                         <i class="bi bi-eye me-1"></i> View Details
                     </a>
-                    <a href="{{ route('admin.events.edit', $event->id) }}" class="btn btn-primary btn-sm">
+                    <a href="{{ route('admin.events.edit', $event->slug) }}" class="btn btn-primary btn-sm">
                         <i class="bi bi-pencil me-1"></i> Edit
                     </a>
                     <button type="button" class="btn btn-danger btn-sm delete-event-btn" data-event-id="{{ $event->id }}" data-event-title="{{ $event->title }}">

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\MatchCategories;
 use Illuminate\Database\Eloquent\Model;
 
 class Player extends Model
@@ -15,6 +16,10 @@ class Player extends Model
         'nik',
         'instagram',
         'reclub',
+    ];
+
+    protected $casts = [
+        'category' => MatchCategories::class,
     ];
 
     public function user()

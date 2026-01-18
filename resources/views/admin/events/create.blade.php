@@ -362,19 +362,25 @@
     
     function toggleLeagueFields() {
         const selectedType = eventTypeSelect.value;
+
+        console.log('Event type changed to:', selectedType);
         
-        if (selectedType === 'league') {
-            maxGroupsWrapper.style.display = 'block';
-            maxTeamsInGroupWrapper.style.display = 'block';
-            maxGroupsInput.setAttribute('required', 'required');
-            maxTeamsInGroupInput.setAttribute('required', 'required');
+        if (selectedType == 'league') {
+            if (maxGroupsWrapper) maxGroupsWrapper.style.display = 'block';
+            if (maxTeamsInGroupWrapper) maxTeamsInGroupWrapper.style.display = 'block';
+            if (maxGroupsInput) maxGroupsInput.setAttribute('required', 'required');
+            if (maxTeamsInGroupInput) maxTeamsInGroupInput.setAttribute('required', 'required');
         } else {
-            maxGroupsWrapper.style.display = 'none';
-            maxTeamsInGroupWrapper.style.display = 'none';
-            maxGroupsInput.removeAttribute('required');
-            maxTeamsInGroupInput.removeAttribute('required');
-            maxGroupsInput.value = '';
-            maxTeamsInGroupInput.value = '';
+            if (maxGroupsWrapper) maxGroupsWrapper.style.display = 'none';
+            if (maxTeamsInGroupWrapper) maxTeamsInGroupWrapper.style.display = 'none';
+            if (maxGroupsInput) {
+                maxGroupsInput.removeAttribute('required');
+                maxGroupsInput.value = '';
+            }
+            if (maxTeamsInGroupInput) {
+                maxTeamsInGroupInput.removeAttribute('required');
+                maxTeamsInGroupInput.value = '';
+            }
         }
     }
     

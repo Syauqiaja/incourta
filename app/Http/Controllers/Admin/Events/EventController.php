@@ -117,15 +117,15 @@ class EventController extends Controller
         }
     }
 
-    public function show($id)
+    public function show($slug)
     {
-        $event = Event::with(['pricings', 'creator'])->findOrFail($id);
+        $event = Event::with(['pricings', 'creator'])->where('slug', $slug)->firstOrFail();
         return view('admin.events.detail', compact('event'));
     }
 
-    public function edit($id)
+    public function edit($slug)
     {
-        $event = Event::with('pricings')->findOrFail($id);
+        $event = Event::with('pricings')->where('slug', $slug)->firstOrFail();
         return view('admin.events.edit', compact('event'));
     }
 
@@ -166,7 +166,7 @@ class EventController extends Controller
         try {
             DB::beginTransaction();
 
-            $event = Event::findOrFail($id);
+            $event = Event::find($id);
             $oldImage = $event->image;
 
             // Handle image upload
