@@ -1,63 +1,58 @@
 @extends('admin.layouts.app-alpine')
 @section('content')
+    @include('admin.layouts.datatable')
     <!-- [ breadcrumb ] start -->
     {{ Breadcrumbs::render('admin.home.index') }}
-
     <!-- [ breadcrumb ] end -->
-
-
     <!-- [ Main Content ] start -->
     <div class="row">
         <!-- [ sample-page ] start -->
         <div class="col-sm-12">
             <div class="card">
                 <div class="card-header">
-                    <h5>Hello card</h5>
+                    <div class="d-flex justify-content-between mb-3">
+                        <h4>List Matches – {{ $event->title }}</h4>
+
+                        <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#generate-modal">
+                            Generate / Regenerate Match
+                        </button>
+
+                    </div>
                 </div>
-                <div class="card-body" x-data="matchmaking(@js($fixtures))" x-init="init()">
+                <div class="card-body">
                     <div class="row g-3">
-                        <template x-for="match in matches" :key="match.match_id">
-                            <div class="col-md-6 col-lg-4">
-                                <div class="card shadow-sm">
-                                    <div class="card-header text-center fw-bold">
-                                        Match #<span x-text="match.match_id"></span>
-                                    </div>
+                        <table class="table align-middle" id="table-fixture">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Stage</th>
+                                    <th>Team A</th>
+                                    <th>Team B</th>
+                                    <th>Court</th>
+                                    <th>Schedule</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
 
-                                    <div class="card-body">
-                                        <!-- SIDE 1 -->
-                                        <div class="mb-2">
-                                            <div class="text-muted small mb-1">Side 1</div>
-                                            <div class="list-group team-drop" :data-match="match.match_id" data-side="1">
-                                                <template x-for="item in match.teams.filter(t => t.side === 1)"
-                                                    :key="item.team.id">
-                                                    <div class="list-group-item team-card" :data-team="item.team.id">
-                                                        <strong x-text="item.team.player1.name"></strong>
-                                                        <span class="text-muted"> & </span>
-                                                        <strong x-text="item.team.player2.name"></strong>
-                                                    </div>
-                                                </template>
-                                            </div>
-                                        </div>
-
-                                        <!-- SIDE 2 -->
-                                        <div>
-                                            <div class="text-muted small mb-1">Side 2</div>
-                                            <div class="list-group team-drop" :data-match="match.match_id" data-side="2">
-                                                <template x-for="item in match.teams.filter(t => t.side === 2)"
-                                                    :key="item.team.id">
-                                                    <div class="list-group-item team-card" :data-team="item.team.id">
-                                                        <strong x-text="item.team.player1.name"></strong>
-                                                        <span class="text-muted"> & </span>
-                                                        <strong x-text="item.team.player2.name"></strong>
-                                                    </div>
-                                                </template>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                </div>
-                            </div>
-                        </template>
+                            <tbody>
+                                {{-- @foreach ($matches as $i => $match)
+                                    <tr>
+                                        <td>{{ $i + 1 }}</td>
+                                        <td>{{ ucfirst($match->stage) }}</td>
+                                        <td>{{ $match->teamA->name }}</td>
+                                        <td>{{ $match->teamB->name }}</td>
+                                        <td>{{ optional($match->schedule->court)->name ?? '-' }}</td>
+                                        <td>{{ optional($match->schedule)->scheduled_time ?? '-' }}</td>
+                                        <td>
+                                            <button class="btn btn-sm btn-primary"
+                                                onclick="openScheduleModal({{ $match->id }})">
+                                                Set Schedule
+                                            </button>
+                                        </td>
+                                    </tr>
+                                @endforeach --}}
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -66,68 +61,112 @@
     </div>
     <!-- [ Main Content ] end -->
 @endsection
+@section('modal-section')
+    @include('admin.fixture.partials.generate-modal')
+    {{-- @include('admin.fixture.partials.schedule-modal') --}}
+@endsection
 @push('scripts')
-    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.2/Sortable.min.js"></script>
+    <script src="{{ asset('assets/js/custom/ajax-request.js') }}"></script>
     <script>
-        function matchmaking(initialMatches) {
-            return {
-                matches: initialMatches,
-
-                init() {
-                    this.$nextTick(() => {
-                        document.querySelectorAll('.team-drop').forEach(el => {
-                            new Sortable(el, {
-                                group: 'teams',
-                                animation: 150,
-                                onAdd: (evt) => {
-                                    const teamId = evt.item.dataset.team;
-                                    // const matchId = evt.to.dataset.match;
-                                    const fromMatch = evt.from.dataset.match;
-                                    const toMatch = evt.to.dataset.match;
-                                    const side = evt.to.dataset.side;
-
-                                    if (fromMatch !== toMatch) {
-                                        this.swapCrossMatch(teamId, fromMatch, toMatch, side);
-                                        return;
-                                    }
-                                    this.updateTeam(teamId, toMatch, side);
-                                }
-                            });
-                        });
-                    });
-                },
-
-                updateTeam(teamId, matchId, side) {
-                    fetch('/matchmaking/update', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': document.querySelector('meta[name=csrf-token]').content
-                        },
-                        body: JSON.stringify({
-                            team_id: teamId,
-                            match_id: matchId,
-                            side: side
-                        })
-                    });
-                },
-                swapCrossMatch(teamId, fromMatch, toMatch, side) {
-                    fetch('/matchmaking/swap-cross', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': document.querySelector('meta[name=csrf-token]').content
-                        },
-                        body: JSON.stringify({
-                            team_id: teamId,
-                            from_match: fromMatch,
-                            to_match: toMatch,
-                            side: side
-                        })
-                    });
+        $(function() {
+            let table = $('#table-fixture').DataTable();
+            // approve Payment PC
+            initAjaxForm({
+                formSelector: '#generate-form',
+                modalSelector: '#generate-modal',
+                onSuccess: () => {
+                    table.draw();
                 }
+            });
+        });
 
-            }
+        function initAjaxForm({
+            formSelector,
+            modalSelector = null,
+            onSuccess = null,
+            onAfterSuccess = null,
+        }) {
+            return new AjaxForm(formSelector, {
+                showLoader: false,
+
+                beforeSubmit: (form) => {
+                    // reset error sebelumnya
+                    form.querySelectorAll('.is-invalid').forEach(el => {
+                        el.classList.remove('is-invalid');
+                    });
+
+                    form.querySelectorAll('.invalid-feedback').forEach(el => {
+                        el.remove();
+                    });
+                    const btnSubmit = form.querySelector('button[type="submit"]');
+                    if (!btnSubmit) return;
+
+                    const btnText = btnSubmit.querySelector('.btn-text');
+                    const spinner = btnSubmit.querySelector('.spinner-border');
+
+                    btnSubmit.disabled = true;
+                    btnText?.classList.add('d-none');
+                    spinner?.classList.remove('d-none');
+                },
+
+                afterSubmit: (form) => {
+                    const btnSubmit = form.querySelector('button[type="submit"]');
+                    if (!btnSubmit) return;
+
+                    const btnText = btnSubmit.querySelector('.btn-text');
+                    const spinner = btnSubmit.querySelector('.spinner-border');
+
+                    btnSubmit.disabled = false;
+                    spinner?.classList.add('d-none');
+                    btnText?.classList.remove('d-none');
+                },
+
+                onError: (err, form) => {
+                    if (!err?.errors) return;
+
+                    // reset error sebelumnya
+                    form.querySelectorAll('.is-invalid').forEach(el => {
+                        el.classList.remove('is-invalid');
+                    });
+
+                    form.querySelectorAll('.invalid-feedback').forEach(el => {
+                        el.remove();
+                    });
+
+                    Object.entries(err.errors).forEach(([field, messages]) => {
+                        const input = form.querySelector(`[name="${field}"]`);
+                        if (!input) return;
+
+                        input.classList.add('is-invalid');
+
+                        const wrapper =
+                            input.closest('.form-floating, .mb-3') || input.parentElement;
+
+                        const feedback = document.createElement('div');
+                        feedback.className = 'invalid-feedback';
+                        feedback.textContent = messages[0];
+
+                        wrapper.appendChild(feedback);
+                    });
+                },
+
+                onSuccess: (data) => {
+                    // close modal (optional)
+                    if (modalSelector) {
+                        $(modalSelector).modal('hide');
+                    }
+
+                    // callback success dari luar
+                    if (typeof onSuccess === 'function') {
+                        onSuccess(data);
+                    }
+
+                    // callback tambahan (optional)
+                    if (typeof onAfterSuccess === 'function') {
+                        onAfterSuccess(data);
+                    }
+                }
+            });
         }
     </script>
 @endpush

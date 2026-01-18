@@ -22,10 +22,10 @@ class PermissionDictionary
         ['name' => 'admin>event>create', 'menu' => 'Event Tournament', 'group' => 'admin', 'type' => 2],
         ['name' => 'admin>event>edit', 'menu' => 'Event Tournament', 'group' => 'admin', 'type' => 3],
         ['name' => 'admin>event>delete', 'menu' => 'Event Tournament', 'group' => 'admin', 'type' => 4],
-        ['name' => 'admin>fixture>read', 'menu' => 'Matchmaking Tournament', 'group' => 'admin', 'type' => 1],
-        ['name' => 'admin>fixture>create', 'menu' => 'Matchmaking Tournament', 'group' => 'admin', 'type' => 2],
-        ['name' => 'admin>fixture>edit', 'menu' => 'Matchmaking Tournament', 'group' => 'admin', 'type' => 3],
-        ['name' => 'admin>fixture>delete', 'menu' => 'Matchmaking Tournament', 'group' => 'admin', 'type' => 4],
+        ['name' => 'admin>event>fixture>read', 'menu' => 'Matchmaking Tournament', 'group' => 'admin', 'type' => 1],
+        ['name' => 'admin>event>fixture>create', 'menu' => 'Matchmaking Tournament', 'group' => 'admin', 'type' => 2],
+        ['name' => 'admin>event>fixture>edit', 'menu' => 'Matchmaking Tournament', 'group' => 'admin', 'type' => 3],
+        ['name' => 'admin>event>fixture>delete', 'menu' => 'Matchmaking Tournament', 'group' => 'admin', 'type' => 4],
     ];
     public static function allPermissions()
     {

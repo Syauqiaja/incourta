@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::prefix('admin/fixture')->name('admin.fixture.')->group(function () {
-    Route::get('/', [FixtureController::class, 'index'])->name('index');
+Route::prefix('admin/event/{id}/fixture')->name('admin.event.fixture.')->group(function () {
+    Route::get('/', [FixtureController::class, 'index'])->name('index')->middleware('permission:read');
+    Route::post('/generate', [FixtureController::class, 'generate'])->name('generate')->middleware('permission:create');
 });

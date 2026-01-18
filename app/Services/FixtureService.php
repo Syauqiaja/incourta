@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\EventType;
 use App\Models\Event;
 use App\Models\Fixture;
 use App\Models\Group;
@@ -368,8 +369,8 @@ class FixtureService
     {
         match ($event->event_type) {
             'league'        => $this->generateLeague($event),
-            'cup'           => $this->generateCup($event),
-            'championship'  => $this->generateChampionship($event),
+            'championship'           => $this->generateCup($event),
+            'league_and_championship'  => $this->generateChampionship($event),
         };
     }
 
@@ -386,12 +387,11 @@ class FixtureService
             foreach ($teams as $i => $teamA) {
                 for ($j = $i + 1; $j < count($teams); $j++) {
                     $teamB = $teams[$j];
-
                     Fixture::create([
-                        'tournament_id' => $event->id,
-                        'stage'         => 'league',
-                        'team_a_id'     => $teamA->team_id,
-                        'team_b_id'     => $teamB->team_id,
+                        'event_id' => $event->id,
+                        'event_type' => EventType::LEAGUE,
+                        'first_team_id'     => $teamA->id,
+                        'second_team_id'     => $teamB->id,
                     ]);
                 }
             }
@@ -407,21 +407,22 @@ class FixtureService
      */
     public function generateCup(Event $event): void
     {
-        $teams = $this->getTournamentTeams($event);
-
-        $pairings = $this->seededPairing($teams);
-
-        DB::transaction(function () use ($event, $pairings) {
+        try {
+            //code...
+            $teams = $this->getTournamentTeams($event);
+            $pairings = $this->seededPairing($teams);
             foreach ($pairings as [$teamA, $teamB]) {
                 Fixture::create([
-                    'tournament_id' => $event->id,
-                    'stage'         => 'knockout',
-                    'round_name'    => $this->initialRoundName(count($pairings) * 2),
-                    'team_a_id'     => $teamA->team_id,
-                    'team_b_id'     => $teamB->team_id,
+                    'event_id' => $event->id,
+                    'event_type' => EventType::CHAMPIONSHIP,
+                    'round_name' => $this->initialRoundName(count($pairings) * 2),
+                    'first_team_id' => $teamA->id,
+                    'second_team_id' => $teamB->id,
                 ]);
             }
-        });
+        } catch (\Throwable $th) {
+            throw $th;
+        }
     }
 
     /**
@@ -455,11 +456,11 @@ class FixtureService
             for ($i = 0; $i < $teams->count(); $i++) {
                 for ($j = $i + 1; $j < $teams->count(); $j++) {
                     Fixture::create([
-                        'tournament_id' => $event->id,
-                        'stage'         => 'group',
+                        'event_id' => $event->id,
+                        'stage'         => EventType::LEAGUE_AND_CHAMPIONSHIP,
                         'group_id'      => $group->id,
-                        'team_a_id'     => $teams[$i]->id,
-                        'team_b_id'     => $teams[$j]->id,
+                        'first_team_id'     => $teams[$i]->id,
+                        'second_team_id'     => $teams[$j]->id,
                     ]);
                 }
             }
@@ -503,7 +504,7 @@ class FixtureService
         for ($i = 0; $i < $groupCount; $i++) {
             $groups->push(
                 Group::create([
-                    'tournament_id' => $event->id,
+                    'event_id' => $event->id,
                     'name' => $groupNames[$i],
                 ])
             );
@@ -514,7 +515,7 @@ class FixtureService
         $i = 0;
         foreach ($sorted as $team) {
             $group = $groups[$i % $groupCount];
-            $group->teams()->attach($team->team_id);
+            $group->teams()->attach($team->id);
             $i++;
         }
 
@@ -530,8 +531,8 @@ class FixtureService
     {
         foreach ($teams as $team) {
             Standing::create([
-                'tournament_id' => $event->id,
-                'team_id'       => $team->team_id,
+                'event_id' => $event->id,
+                'team_event_id' => $team->team_event_id,
             ]);
         }
     }

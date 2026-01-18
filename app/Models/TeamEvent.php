@@ -10,6 +10,7 @@ class TeamEvent extends Model
         'first_player_id',
         'second_player_id',
         'event_id',
+        'seed'
     ];
 
     public function firstPlayer()
@@ -25,5 +26,14 @@ class TeamEvent extends Model
     public function event()
     {
         return $this->belongsTo(Event::class);
+    }
+    public function groups()
+    {
+        return $this->belongsToMany(
+            Group::class,
+            'group_teams',
+            'team_event_id',
+            'group_id'
+        );
     }
 }

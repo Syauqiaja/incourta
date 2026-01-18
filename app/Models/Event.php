@@ -55,6 +55,15 @@ class Event extends Model
         ];
     }
 
+    public function teams()
+    {
+        return $this->hasMany(TeamEvent::class);
+    }
+
+    public function groups()
+    {
+        return $this->hasMany(Group::class);
+    }
     public function pricings()
     {
         return $this->hasMany(EventPricing::class);
